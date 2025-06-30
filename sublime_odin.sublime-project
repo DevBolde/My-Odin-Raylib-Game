@@ -1,0 +1,27 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+		},
+		{
+			"path": "/Users/defu/Odin/vendor/raylib",
+		},
+		{
+			"path": "/Users/defu/Odin/core"
+		},
+	],
+	"build_systems":
+	[
+		{
+			"name": "odin_run_file",
+			"cmd": ["/Users/defu/odin/odin", "run", "$file_name", "-file"],
+			"working_dir": "$file_dir",
+		},
+		{
+			"name": "odin_run_package",
+			"cmd": ["/Users/defu/odin/odin", "run", "."],
+			"working_dir": "$file_dir",
+		}
+	],
+}

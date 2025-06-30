@@ -1,0 +1,292 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"packages",
+				"Preferences: Package Control Settings"
+			],
+			[
+				"Satisfy",
+				"Package Control: Satisfy Libraries"
+			],
+			[
+				"Package Control: odin",
+				"Package Control: Advanced Install Packages"
+			],
+			[
+				"lsp",
+				"LSP: Enable Language Server in Project"
+			],
+			[
+				"lspen",
+				"LSP: Enable Language Server in Project"
+			],
+			[
+				"install pack",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: Disable Package"
+			],
+			[
+				"pref",
+				"Preferences: Settings"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"terminus",
+				"Preferences: Terminus View Settings"
+			],
+			[
+				"terminal",
+				"Preferences: Terminus Command Palette"
+			],
+			[
+				"colors",
+				"UI: Customize Color Scheme"
+			],
+			[
+				"theme",
+				"UI: Select Theme"
+			],
+			[
+				"color",
+				"UI: Customize Color Scheme"
+			],
+			[
+				"view",
+				"View: Toggle Status Bar"
+			],
+			[
+				"view:toggle ",
+				"View: Toggle Distraction Free"
+			],
+			[
+				" install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 143.0,
+		"history":
+		[
+			"cd personal-projects"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/defu/personal-projects/odin-prac"
+	],
+	"file_history":
+	[
+		"/Users/defu/personal-projects/odin-prac/sublime_odin.sublime-project",
+		"/Users/defu/odin/vendor/raylib/raylib.odin",
+		"/Users/defu/personal-projects/odin-prac/odin_prac.odin",
+		"/Users/defu/Library/Application Support/Sublime Text/Packages/User/LSP.sublime-settings",
+		"/Users/defu/Downloads/sunflower-street-drumloop-85bpm-163900.mp3",
+		"/Users/defu/Library/Application Support/Sublime Text/Packages/LSP/LSP.sublime-settings",
+		"/Users/defu/Library/Application Support/Sublime Text/Packages/User/Preferences.sublime-settings",
+		"/Users/defu/Library/Application Support/Sublime Text/Packages/Default/Preferences.sublime-settings",
+		"/Users/defu/personal-projects/odin-prac/more-odin.odin",
+		"/Users/defu/SublimeOdin-config/sublime_odin/hellope.odin",
+		"/Users/defu/SublimeOdin-config/sublime_odin/sublime_odin.sublime-project"
+	],
+	"find":
+	{
+		"height": 38.0
+	},
+	"find_in_files":
+	{
+		"height": 98.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"KeyboardKey",
+			"NHU05104088",
+			" (",
+			"Texture2D",
+			"ClearBackground",
+			"B"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 38.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.LSP Log Panel":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"output.diagnostics":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"output.diff_views":
+	{
+		"height": 106.0,
+		"history":
+		[
+		]
+	},
+	"output.exec":
+	{
+		"height": 191.0,
+		"history":
+		[
+		]
+	},
+	"output.find_results":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"pinned_build_system": "odin_prac",
+	"project": "sublime_odin.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"lsp_show_inlay_hints": false
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
