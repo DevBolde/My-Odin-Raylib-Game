@@ -5,23 +5,75 @@
 			"path": ".",
 		},
 		{
-			"path": "/Users/defu/Odin/vendor/raylib",
+			"path": "C:\\Odin\\core",
 		},
 		{
-			"path": "/Users/defu/Odin/core"
+			"path": "C:\\Odin\\vendor\\raylib"
 		},
 	],
 	"build_systems":
 	[
 		{
 			"name": "odin_run_file",
-			"cmd": ["/Users/defu/odin/odin", "run", "$file_name", "-file"],
+			"cmd": ["odin", "run", "$file_name", "-file"],
 			"working_dir": "$file_dir",
+			"variants":
+			[
+				{
+					"name": "Mac",
+					"cmd": ["/Users/defu/odin/odin", "run", "$file_name", "-file"],
+				},
+				{
+					"name": "Windows", 
+					"cmd": ["C:\\odin\\odin.exe", "run", "$file_name", "-file"],
+				}
+			],
 		},
 		{
 			"name": "odin_run_package",
-			"cmd": ["/Users/defu/odin/odin", "run", "."],
+			"cmd": ["odin", "run", "."],
 			"working_dir": "$file_dir",
+			"variants":
+			[
+				{
+					"name": "Mac",
+					"cmd": ["/Users/defu/odin/odin", "run", "."],
+				},
+				{
+					"name": "Windows",
+					"cmd": ["C:\\odin\\odin.exe", "run", "."],
+				}
+			],
 		}
 	],
+	"settings":
+	{
+		"folders":
+		{
+			"osx":
+			[
+				{
+					"path": ".",
+				},
+				{
+					"path": "/Users/defu/Odin/vendor/raylib",
+				},
+				{
+					"path": "/Users/defu/Odin/core",
+				}
+			],
+			"windows":
+			[
+				{
+					"path": ".",
+				},
+				{
+					"path": "C:\\Odin\\vendor\\raylib",
+				},
+				{
+					"path": "C:\\Odin\\core",
+				}
+			],
+		},
+	},
 }

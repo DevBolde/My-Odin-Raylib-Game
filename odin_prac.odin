@@ -32,8 +32,7 @@ main :: proc() {
 
     // Define the size of each sprite (you need to measure/count pixels)
     sprite_width: i32 = 16   // Adjust based on your spritesheet
-    sprite_height: i32 = 16  // Adjust based on your spritesheet
-
+    sprite_height: i32 = 16
     // To get a specific sprite, calculate its position in the grid
     get_sprite_asset :: proc(row, col: i32, sprite_w, sprite_h: i32) -> rl.Rectangle {
         return rl.Rectangle{
@@ -43,7 +42,8 @@ main :: proc() {
             height = f32(sprite_h)
         }
     }
-    rl.SetSoundVolume(background_sound, 0.5)
+    rl.SetSoundVolume(background_sound, 0.25)
+    rl.SetSoundVolume(flying_sound, 0.3)
     rl.PlaySound(background_sound)
 
     rl.SetTargetFPS(60)
@@ -52,14 +52,17 @@ main :: proc() {
     character_off_ground: bool 
     ground_y: f32 = 600  // Ground level
     jump_velocity: f32 
+    platform_pos:= rl.Vector2{300, 575} 
     
     for !rl.WindowShouldClose() {
-        dt := rl.GetFrameTime()
+        dt := rl.GetFrameTime() // Delta time is crucial for frame-rate independent movement and animation
         rl.BeginDrawing()
         rl.ClearBackground(rl.GRAY)
 
+        // Background Textures
         rl.DrawTextureEx(background_texture, {0, 0}, 0, 1280.0/f32(background_texture.width), rl.WHITE) 
         rl.DrawTextureEx(ground_texture, {0, 380}, 0, 1280.0/f32(ground_texture.width), rl.WHITE)
+
 
         // Draw a specific sprite (row 0, column 3 for example)
         bat_sprite := get_sprite_asset(21, 21, sprite_width, sprite_height)
@@ -70,19 +73,41 @@ main :: proc() {
             width = f32(sprite_width) * scale,
             height = f32(sprite_height) * scale
         }
-        rl.DrawTexturePro(spritesheet, bat_sprite, dest_rect, {0, 0}, 0, rl.WHITE)
+       rl.DrawTexturePro(spritesheet, bat_sprite, dest_rect, {0, 0}, 0, rl.WHITE)
+
+      // TODO: finish platform logic (add texture sprite, similar to bat logic) 
+       platform := rl.Rectangle{
+        x = platform_pos.x,
+        y = platform_pos.y, 
+        width = f32(100),
+        height = f32(100),
+       }
+
+       // TODO: finish collision check logic (if not on platform anymore you should fall to ground)
+       if rl.CheckCollisionRecs(dest_rect, platform) == true{
+            if dest_rect.y < platform.y{
+                dest_rect.y = platform.y - (f32(sprite_height) * scale)
+                character_off_ground = false
+                jump_velocity = 0
+            }
+       }
+
+
+
         // Jump & Jump-sound logic
         if rl.IsKeyPressed(.SPACE) && !character_off_ground {
-            jump_velocity = -500
+            jump_velocity = -400
             character_off_ground = true
             rl.PlaySound(jump_sound)
         }
+
        //Apply gravity and velocity 
         if character_off_ground {
             jump_velocity += 900 * dt
             character_pos.y += jump_velocity * dt
 
         }
+
         // check for landing
         if character_pos.y >= ground_y{
             character_pos.y = ground_y
@@ -94,6 +119,7 @@ main :: proc() {
         if rl.IsKeyPressed(.L) || rl.IsKeyPressed(.H) && character_off_ground == false {
             rl.PlaySound(flying_sound)
         }
+
         // Restart flying sound when landing while still holding movement keys
         if !character_off_ground && (rl.IsKeyDown(.L) || rl.IsKeyDown(.H)) && !rl.IsSoundPlaying(flying_sound) {
             rl.PlaySound(flying_sound)

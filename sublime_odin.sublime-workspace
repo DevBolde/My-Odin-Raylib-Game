@@ -7,18 +7,486 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "odin_prac.odin",
+			"settings":
+			{
+				"buffer_size": 4482,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					24,
+					1,
+					"sequence",
+					{
+						"commands":
+						[
+							[
+								"reindent",
+								null
+							],
+							[
+								"insert",
+								{
+									"characters": "//"
+								}
+							],
+							[
+								"insert",
+								{
+									"characters": " backgrou"
+								}
+							],
+							[
+								"insert",
+								{
+									"characters": "nd"
+								}
+							],
+							[
+								"insert",
+								{
+									"characters": " "
+								}
+							],
+							[
+								"left_delete",
+								null
+							],
+							[
+								"left_delete",
+								null
+							],
+							[
+								"left_delete",
+								null
+							],
+							[
+								"left_delete",
+								null
+							],
+							[
+								"left_delete",
+								null
+							],
+							[
+								"left_delete",
+								null
+							],
+							[
+								"left_delete",
+								null
+							],
+							[
+								"left_delete",
+								null
+							],
+							[
+								"left_delete",
+								null
+							],
+							[
+								"left_delete",
+								null
+							],
+							[
+								"left_delete",
+								null
+							],
+							[
+								"insert",
+								{
+									"characters": "Background"
+								}
+							],
+							[
+								"insert",
+								{
+									"characters": " Textures"
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": false
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": false
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": false
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": false
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": false
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": false
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": false
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": false
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": true
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": true
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": true
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": true
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": true
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": true
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": true
+								}
+							],
+							[
+								"move",
+								{
+									"by": "characters",
+									"forward": true
+								}
+							],
+							[
+								"exit_insert_mode",
+								null
+							]
+						]
+					},
+					"LQAAAKIHAAAAAAAAqgcAAAAAAAAAAAAAqgcAAAAAAACrBwAAAAAAAAAAAACrBwAAAAAAAKwHAAAAAAAAAAAAAKwHAAAAAAAArQcAAAAAAAAAAAAArQcAAAAAAACuBwAAAAAAAAAAAACuBwAAAAAAAK8HAAAAAAAAAAAAAK8HAAAAAAAAsAcAAAAAAAAAAAAAsAcAAAAAAACxBwAAAAAAAAAAAACxBwAAAAAAALIHAAAAAAAAAAAAALIHAAAAAAAAswcAAAAAAAAAAAAAswcAAAAAAAC0BwAAAAAAAAAAAAC0BwAAAAAAALUHAAAAAAAAAAAAALUHAAAAAAAAtgcAAAAAAAAAAAAAtgcAAAAAAAC3BwAAAAAAAAAAAAC3BwAAAAAAALgHAAAAAAAAAAAAALcHAAAAAAAAtwcAAAAAAAABAAAAILYHAAAAAAAAtgcAAAAAAAABAAAAZLUHAAAAAAAAtQcAAAAAAAABAAAAbrQHAAAAAAAAtAcAAAAAAAABAAAAdbMHAAAAAAAAswcAAAAAAAABAAAAb7IHAAAAAAAAsgcAAAAAAAABAAAAcrEHAAAAAAAAsQcAAAAAAAABAAAAZ7AHAAAAAAAAsAcAAAAAAAABAAAAa68HAAAAAAAArwcAAAAAAAABAAAAY64HAAAAAAAArgcAAAAAAAABAAAAYa0HAAAAAAAArQcAAAAAAAABAAAAYq0HAAAAAAAArgcAAAAAAAAAAAAArgcAAAAAAACvBwAAAAAAAAAAAACvBwAAAAAAALAHAAAAAAAAAAAAALAHAAAAAAAAsQcAAAAAAAAAAAAAsQcAAAAAAACyBwAAAAAAAAAAAACyBwAAAAAAALMHAAAAAAAAAAAAALMHAAAAAAAAtAcAAAAAAAAAAAAAtAcAAAAAAAC1BwAAAAAAAAAAAAC1BwAAAAAAALYHAAAAAAAAAAAAALYHAAAAAAAAtwcAAAAAAAAAAAAAtwcAAAAAAAC4BwAAAAAAAAAAAAC4BwAAAAAAALkHAAAAAAAAAAAAALkHAAAAAAAAugcAAAAAAAAAAAAAugcAAAAAAAC7BwAAAAAAAAAAAAC7BwAAAAAAALwHAAAAAAAAAAAAALwHAAAAAAAAvQcAAAAAAAAAAAAAvQcAAAAAAAC+BwAAAAAAAAAAAAC+BwAAAAAAAL8HAAAAAAAAAAAAAL8HAAAAAAAAwAcAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAogcAAAAAAACiBwAAAAAAAAAAAAAAAGxA"
+				],
+				[
+					26,
+					1,
+					"sequence",
+					{
+						"commands":
+						[
+							[
+								"run_macro_file",
+								{
+									"file": "res://Packages/Default/Add Line Before.sublime-macro",
+									"register": "\""
+								}
+							],
+							[
+								"exit_insert_mode",
+								null
+							]
+						]
+					},
+					"AgAAAKIHAAAAAAAAowcAAAAAAAAAAAAAogcAAAAAAACqBwAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAvwcAAAAAAAC/BwAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					39,
+					1,
+					"vi_eval",
+					{
+						"action_args":
+						{
+						},
+						"action_command": "vi_delete",
+						"motion_args":
+						{
+							"extend": true,
+							"forward": true,
+							"visual": false
+						},
+						"motion_clip_to_line": false,
+						"motion_command": "vi_move_by_characters_in_line",
+						"motion_inclusive": false,
+						"motion_mode": 0
+					},
+					"AgAAABoGAAAAAAAAGgYAAAAAAAABAAAANaEHAAAAAAAAoQcAAAAAAAAIAAAAICAgICAgICA",
+					"AQAAAAAAAAABAAAAGgYAAAAAAAAaBgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					41,
+					1,
+					"sequence",
+					{
+						"commands":
+						[
+							[
+								"insert",
+								{
+									"characters": "25"
+								}
+							],
+							[
+								"exit_insert_mode",
+								null
+							]
+						]
+					},
+					"AgAAABoGAAAAAAAAGwYAAAAAAAAAAAAAGwYAAAAAAAAcBgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAGgYAAAAAAAAaBgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					52,
+					1,
+					"sequence",
+					{
+						"commands":
+						[
+							[
+								"run_macro_file",
+								{
+									"file": "res://Packages/Default/Add Line.sublime-macro",
+									"register": "\""
+								}
+							],
+							[
+								"insert",
+								{
+									"characters": "rl.Sets"
+								}
+							],
+							[
+								"insert",
+								{
+									"characters": "ound"
+								}
+							],
+							[
+								"insert_completion",
+								{
+									"completion": "SetSoundVolume",
+									"format": "text",
+									"keep_prefix": false,
+									"must_insert": false,
+									"trigger": "SetSoundVolume"
+								}
+							],
+							[
+								"insert_snippet",
+								{
+									"contents": "($0)"
+								}
+							],
+							[
+								"insert",
+								{
+									"characters": "flyi"
+								}
+							],
+							[
+								"insert_completion",
+								{
+									"completion": "flying_sound",
+									"format": "text",
+									"keep_prefix": false,
+									"must_insert": false,
+									"trigger": "flying_sound"
+								}
+							],
+							[
+								"insert",
+								{
+									"characters": ","
+								}
+							],
+							[
+								"insert",
+								{
+									"characters": " 0."
+								}
+							],
+							[
+								"insert",
+								{
+									"characters": "25"
+								}
+							],
+							[
+								"exit_insert_mode",
+								null
+							]
+						]
+					},
+					"GwAAAB0GAAAAAAAAIgYAAAAAAAAAAAAAIgYAAAAAAAAjBgAAAAAAAAAAAAAjBgAAAAAAACQGAAAAAAAAAAAAACQGAAAAAAAAJQYAAAAAAAAAAAAAJQYAAAAAAAAmBgAAAAAAAAAAAAAmBgAAAAAAACcGAAAAAAAAAAAAACcGAAAAAAAAKAYAAAAAAAAAAAAAKAYAAAAAAAApBgAAAAAAAAAAAAApBgAAAAAAACoGAAAAAAAAAAAAACoGAAAAAAAAKwYAAAAAAAAAAAAAKwYAAAAAAAAsBgAAAAAAAAAAAAAsBgAAAAAAAC0GAAAAAAAAAAAAACUGAAAAAAAAJQYAAAAAAAAIAAAAU2V0c291bmQlBgAAAAAAADMGAAAAAAAAAAAAADMGAAAAAAAANQYAAAAAAAAAAAAANAYAAAAAAAA1BgAAAAAAAAAAAAA1BgAAAAAAADYGAAAAAAAAAAAAADYGAAAAAAAANwYAAAAAAAAAAAAANwYAAAAAAAA4BgAAAAAAAAAAAAA0BgAAAAAAADQGAAAAAAAABAAAAGZseWk0BgAAAAAAAEAGAAAAAAAAAAAAAEAGAAAAAAAAQQYAAAAAAAAAAAAAQQYAAAAAAABCBgAAAAAAAAAAAABCBgAAAAAAAEMGAAAAAAAAAAAAAEMGAAAAAAAARAYAAAAAAAAAAAAARAYAAAAAAABFBgAAAAAAAAAAAABFBgAAAAAAAEYGAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAGwYAAAAAAAAbBgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					58,
+					1,
+					"sequence",
+					{
+						"commands":
+						[
+							[
+								"enter_visual_mode",
+								null
+							],
+							[
+								"vi_eval",
+								{
+									"action_args": null,
+									"action_command": null,
+									"motion_args":
+									{
+										"extend": true,
+										"forward": true,
+										"visual": false
+									},
+									"motion_clip_to_line": false,
+									"motion_command": "vi_move_by_characters_in_line",
+									"motion_inclusive": false,
+									"motion_mode": 0
+								}
+							],
+							[
+								"vi_eval",
+								{
+									"action_args":
+									{
+										"insert_command": "vi_delete"
+									},
+									"action_command": "enter_insert_mode",
+									"motion_args": null,
+									"motion_clip_to_line": false,
+									"motion_command": null,
+									"motion_inclusive": false,
+									"motion_mode": 0
+								}
+							],
+							[
+								"insert",
+								{
+									"characters": "3"
+								}
+							],
+							[
+								"exit_insert_mode",
+								null
+							]
+						]
+					},
+					"AgAAAEQGAAAAAAAARAYAAAAAAAACAAAAMjVEBgAAAAAAAEUGAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAARAYAAAAAAABEBgAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		},
+		{
+			"file": "/C/Odin/vendor/raylib/raylib.odin",
+			"settings":
+			{
+				"buffer_size": 139997,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
 	],
-	"build_system": "",
+	"build_system": "odin_run_file",
 	"build_system_choices":
 	[
+		[
+			[
+				[
+					"odin_run_file",
+					""
+				],
+				[
+					"odin_run_file",
+					"Mac"
+				],
+				[
+					"odin_run_file",
+					"Windows"
+				]
+			],
+			[
+				"odin_run_file",
+				"Windows"
+			]
+		]
 	],
-	"build_varint": "",
+	"build_varint": "Windows",
 	"command_palette":
 	{
 		"height": 0.0,
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"color",
+				"UI: Customize Color Scheme"
+			],
 			[
 				"packages",
 				"Preferences: Package Control Settings"
@@ -76,10 +544,6 @@
 				"UI: Select Theme"
 			],
 			[
-				"color",
-				"UI: Customize Color Scheme"
-			],
-			[
 				"view",
 				"View: Toggle Status Bar"
 			],
@@ -113,10 +577,11 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/defu/personal-projects/odin-prac"
+		"/C/Users/Devin Bolden/Personal Projects/My-Odin-Raylib-Game"
 	],
 	"file_history":
 	[
+		"/C/Users/Devin Bolden/Personal Projects/My-Odin-Raylib-Game/sublime_odin.sublime-project",
 		"/Users/defu/personal-projects/odin-prac/sublime_odin.sublime-project",
 		"/Users/defu/odin/vendor/raylib/raylib.odin",
 		"/Users/defu/personal-projects/odin-prac/odin_prac.odin",
@@ -131,7 +596,7 @@
 	],
 	"find":
 	{
-		"height": 38.0
+		"height": 23.0
 	},
 	"find_in_files":
 	{
@@ -145,6 +610,7 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"/",
 			"KeyboardKey",
 			"NHU05104088",
 			" (",
@@ -172,12 +638,77 @@
 		{
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "odin_prac.odin",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4482,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1819,
+								1819
+							]
+						],
+						"settings":
+						{
+							"lsp_uri": "file:///C:/Users/Devin%20Bolden/Personal%20Projects/My-Odin-Raylib-Game/odin_prac.odin",
+							"syntax": "Packages/Odin/Odin.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 420.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Odin/vendor/raylib/raylib.odin",
+					"selected": true,
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 139997,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"lsp_uri": "file:///C:/Odin/vendor/raylib/raylib.odin",
+							"syntax": "Packages/Odin/Odin.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1050.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 38.0
+		"height": 23.0
 	},
 	"input":
 	{
@@ -241,7 +772,7 @@
 		[
 		]
 	},
-	"pinned_build_system": "odin_prac",
+	"pinned_build_system": "odin_run_file",
 	"project": "sublime_odin.sublime-project",
 	"replace":
 	{
@@ -283,7 +814,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 150.0,
 	"status_bar_visible": true,
 	"template_settings":
