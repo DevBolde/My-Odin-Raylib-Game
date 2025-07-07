@@ -57,6 +57,7 @@ main :: proc() {
     sprite_height_scale:f32 = f32(sprite_height) * scale
     sprite_width_scale:f32 = f32(sprite_width) * scale
     character_hit_wall: bool
+    character_on_platform: bool
     
     for !rl.WindowShouldClose() {
         dt := rl.GetFrameTime() // Delta time is crucial for frame-rate independent movement and animation
@@ -89,20 +90,37 @@ main :: proc() {
        // reset collision
        character_hit_wall = false
 
-       // TODO: finish collision check logic (if not on platform anymore you should fall to ground)
-       if rl.CheckCollisionRecs(dest_rect, platform) == true{
-            if dest_rect.y < platform.y{
-                dest_rect.y = platform.y - sprite_height_scale
+        // }// Alternative simpler approach if you prefer:
+        if rl.CheckCollisionRecs(dest_rect, platform) {
+            // Check if character is mostly above the platform
+            character_center_y := dest_rect.y + dest_rect.height/2
+            platform_center_y := platform.y + platform.height/2
+            
+            if character_center_y < platform_center_y {
+                // Land on top of platform
+                character_pos.y = platform.y - sprite_height_scale
                 character_off_ground = false
+                character_on_platform = true
                 jump_velocity = 0
+            } else {
+                // Side collision - push character away horizontally
+                character_center_x := dest_rect.x + dest_rect.width/2
+                platform_center_x := platform.x + platform.width/2
+                
+                if character_center_x < platform_center_x {
+                    // Push left
+                    character_pos.x = platform.x - sprite_width_scale
+                } else {
+                    // Push right
+                    character_pos.x = platform.x + platform.width
+                }
             }
-           else if dest_rect.x <= platform.x && character_hit_wall == false{
-                character_hit_wall = true
+            if character_pos.x < platform_pos.x || character_pos.x > platform_pos.x && character_on_platform == true{
+                character_off_ground = true
             }
+        }
 
-
-       }
-
+        
         // Jump & Jump-sound logic
         if rl.IsKeyPressed(.SPACE) && !character_off_ground {
             jump_velocity = -400
