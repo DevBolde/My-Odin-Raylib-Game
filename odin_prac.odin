@@ -90,7 +90,8 @@ main :: proc() {
        // reset collision
        character_hit_wall = false
 
-        // }// Alternative simpler approach if you prefer:
+        // TODO: make sure you understand this!!!
+        //TODO: cant jump while on box
         if rl.CheckCollisionRecs(dest_rect, platform) {
             // Check if character is mostly above the platform
             character_center_y := dest_rect.y + dest_rect.height/2
@@ -120,7 +121,7 @@ main :: proc() {
             }
         }
 
-        
+
         // Jump & Jump-sound logic
         if rl.IsKeyPressed(.SPACE) && !character_off_ground {
             jump_velocity = -400
