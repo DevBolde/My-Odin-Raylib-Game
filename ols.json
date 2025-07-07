@@ -1,0 +1,15 @@
+{
+  "collections": [
+    {
+      "name": "core",
+      "path": "C:\\Odin\\core"
+    },
+    {
+      "name": "vendor",
+      "path": "C:\\Odin\\vendor"
+    }
+  ],
+  "enable_document_symbols": true,
+  "enable_hover": true,
+  "enable_snippets": true
+}
