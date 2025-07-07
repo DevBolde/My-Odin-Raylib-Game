@@ -48,11 +48,15 @@ main :: proc() {
 
     rl.SetTargetFPS(60)
     character_pos := rl.Vector2{90, 600}
+    platform_pos:= rl.Vector2{300, 575} 
     move_speed: f32 = 200 // Made this faster for testing
     character_off_ground: bool 
     ground_y: f32 = 600  // Ground level
     jump_velocity: f32 
-    platform_pos:= rl.Vector2{300, 575} 
+    scale: f32 = 3.0 // Scale factor (3x larger)
+    sprite_height_scale:f32 = f32(sprite_height) * scale
+    sprite_width_scale:f32 = f32(sprite_width) * scale
+    character_hit_wall: bool
     
     for !rl.WindowShouldClose() {
         dt := rl.GetFrameTime() // Delta time is crucial for frame-rate independent movement and animation
@@ -63,36 +67,41 @@ main :: proc() {
         rl.DrawTextureEx(background_texture, {0, 0}, 0, 1280.0/f32(background_texture.width), rl.WHITE) 
         rl.DrawTextureEx(ground_texture, {0, 380}, 0, 1280.0/f32(ground_texture.width), rl.WHITE)
 
-
         // Draw a specific sprite (row 0, column 3 for example)
         bat_sprite := get_sprite_asset(21, 21, sprite_width, sprite_height)
-        scale: f32 = 3.0 // Scale factor (3x larger)
         dest_rect := rl.Rectangle{
             x = character_pos.x,
             y = character_pos.y,
-            width = f32(sprite_width) * scale,
-            height = f32(sprite_height) * scale
+            width = sprite_width_scale,
+            height = sprite_height_scale
         }
        rl.DrawTexturePro(spritesheet, bat_sprite, dest_rect, {0, 0}, 0, rl.WHITE)
 
-      // TODO: finish platform logic (add texture sprite, similar to bat logic) 
+       platform_sprite := get_sprite_asset(1, 1, sprite_width, sprite_height)
        platform := rl.Rectangle{
-        x = platform_pos.x,
-        y = platform_pos.y, 
-        width = f32(100),
-        height = f32(100),
+            x = platform_pos.x,
+            y = platform_pos.y, 
+            width = sprite_width_scale,
+            height = sprite_height_scale
        }
+       rl.DrawTexturePro(spritesheet, platform_sprite, platform, {0,0}, 0, rl.WHITE)
+
+       // reset collision
+       character_hit_wall = false
 
        // TODO: finish collision check logic (if not on platform anymore you should fall to ground)
        if rl.CheckCollisionRecs(dest_rect, platform) == true{
             if dest_rect.y < platform.y{
-                dest_rect.y = platform.y - (f32(sprite_height) * scale)
+                dest_rect.y = platform.y - sprite_height_scale
                 character_off_ground = false
                 jump_velocity = 0
             }
+           else if dest_rect.x <= platform.x && character_hit_wall == false{
+                character_hit_wall = true
+            }
+
+
        }
-
-
 
         // Jump & Jump-sound logic
         if rl.IsKeyPressed(.SPACE) && !character_off_ground {
@@ -125,13 +134,13 @@ main :: proc() {
             rl.PlaySound(flying_sound)
         }
         
-        if rl.IsKeyDown(.L) {
+        if rl.IsKeyDown(.L) && !character_hit_wall{
             character_pos.x += move_speed * dt
             if character_pos.x > 1280 - 50 {
                 character_pos.x = 1280 - 50
             }
         }
-        if rl.IsKeyDown(.H) {
+        if rl.IsKeyDown(.H) && !character_hit_wall{
             character_pos.x -= move_speed * dt  // Changed += to -=
             if character_pos.x < 0 {            // Changed boundary check
                 character_pos.x = 0
