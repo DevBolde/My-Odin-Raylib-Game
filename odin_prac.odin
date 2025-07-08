@@ -116,6 +116,7 @@ main :: proc() {
                     character_pos.x = platform.x + platform.width
                 }
             }
+            //fall off platform if not standing on it
             if character_pos.x < platform_pos.x || character_pos.x > platform_pos.x && character_on_platform == true{
                 character_off_ground = true
             }
@@ -123,11 +124,16 @@ main :: proc() {
 
 
         // Jump & Jump-sound logic
-        if rl.IsKeyPressed(.SPACE) && !character_off_ground {
-            jump_velocity = -400
-            character_off_ground = true
-            rl.PlaySound(jump_sound)
-        }
+            if rl.IsKeyPressed(.SPACE) && !character_off_ground {
+                jump_velocity = -400
+                character_off_ground = true
+                rl.PlaySound(jump_sound)
+            } else if rl.IsKeyPressed(.SPACE) && character_on_platform {
+                jump_velocity = -400
+                character_off_ground = true
+                rl.PlaySound(jump_sound)
+            }
+        
 
        //Apply gravity and velocity 
         if character_off_ground {
