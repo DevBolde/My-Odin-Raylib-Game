@@ -42,6 +42,31 @@ main :: proc() {
             height = f32(sprite_h)
         }
     }
+    // can_jump :: proc(velocity: f32, jump: bool) {
+    //   // Jump & Jump-sound logic
+    //     character_off_ground: bool
+    //     jump_velocity: f32
+
+    //     jump_sound := rl.LoadSound("assets/short_jump.wav")
+    //     defer rl.UnloadSound(jump_sound)
+
+    //     if rl.IsKeyPressed(.SPACE) && !character_off_ground {
+    //         jump_velocity = velocity
+    //         character_off_ground = true
+    //         rl.PlaySound(jump_sound)
+    //     } 
+  
+    // }
+    platform_maker :: proc(x, y, height, width: f32) -> rl.Rectangle{
+        make_rec := rl.Rectangle{
+            x = x,
+            y = y,
+            height = height,
+            width = width,
+        }
+        return make_rec
+    }
+
     rl.SetSoundVolume(background_sound, 0.25)
     rl.SetSoundVolume(flying_sound, 0.3)
     rl.PlaySound(background_sound)
@@ -85,7 +110,9 @@ main :: proc() {
             width = sprite_width_scale,
             height = sprite_height_scale
        }
-       rl.DrawTexturePro(spritesheet, platform_sprite, platform, {0,0}, 0, rl.WHITE)
+      new_rec := platform_maker(platform_pos.x, platform_pos.y, sprite_height_scale, sprite_width_scale)
+       // rl.DrawTexturePro(spritesheet, platform_sprite, platform, {0,0}, 0, rl.WHITE)
+       // rl.DrawTexturePro(spritesheet, platform_sprite, new_rec, {0,0}, 0, rl.WHITE)
 
        // reset collision
        character_hit_wall = false
@@ -103,6 +130,11 @@ main :: proc() {
                 character_off_ground = false
                 character_on_platform = true
                 jump_velocity = 0
+               if rl.IsKeyPressed(.SPACE) && character_on_platform {
+                jump_velocity = -400
+                character_off_ground = true
+                rl.PlaySound(jump_sound)
+            } 
             } else {
                 // Side collision - push character away horizontally
                 character_center_x := dest_rect.x + dest_rect.width/2
@@ -122,18 +154,13 @@ main :: proc() {
             }
         }
 
-
         // Jump & Jump-sound logic
             if rl.IsKeyPressed(.SPACE) && !character_off_ground {
                 jump_velocity = -400
                 character_off_ground = true
                 rl.PlaySound(jump_sound)
-            } else if rl.IsKeyPressed(.SPACE) && character_on_platform {
-                jump_velocity = -400
-                character_off_ground = true
-                rl.PlaySound(jump_sound)
-            }
-        
+            } 
+
 
        //Apply gravity and velocity 
         if character_off_ground {
