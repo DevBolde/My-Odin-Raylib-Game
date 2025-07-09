@@ -2,6 +2,20 @@ package main
 import "core:fmt"
 import rl "vendor:raylib"
 
+sprite_width: i32 = 16   // Adjust based on your spritesheet
+sprite_height: i32 = 16
+character_pos := rl.Vector2{90, 600}
+platform_pos:= rl.Vector2{300, 575} 
+move_speed: f32 = 200 // Made this faster for testing
+character_off_ground: bool 
+ground_y: f32 = 600  // Ground level
+jump_velocity: f32 
+scale: f32 = 3.0 // Scale factor (3x larger)
+sprite_height_scale:f32 = f32(sprite_height) * scale
+sprite_width_scale:f32 = f32(sprite_width) * scale
+character_hit_wall: bool
+character_on_platform: bool
+    
 main :: proc() {
     rl.InitWindow(1280, 720, "My Game")
     defer rl.CloseWindow()
@@ -31,8 +45,7 @@ main :: proc() {
     defer rl.UnloadTexture(ground_texture)
 
     // Define the size of each sprite (you need to measure/count pixels)
-    sprite_width: i32 = 16   // Adjust based on your spritesheet
-    sprite_height: i32 = 16
+
     // To get a specific sprite, calculate its position in the grid
     get_sprite_asset :: proc(row, col: i32, sprite_w, sprite_h: i32) -> rl.Rectangle {
         return rl.Rectangle{
@@ -42,22 +55,8 @@ main :: proc() {
             height = f32(sprite_h)
         }
     }
-    // can_jump :: proc(velocity: f32, jump: bool) {
-    //   // Jump & Jump-sound logic
-    //     character_off_ground: bool
-    //     jump_velocity: f32
 
-    //     jump_sound := rl.LoadSound("assets/short_jump.wav")
-    //     defer rl.UnloadSound(jump_sound)
-
-    //     if rl.IsKeyPressed(.SPACE) && !character_off_ground {
-    //         jump_velocity = velocity
-    //         character_off_ground = true
-    //         rl.PlaySound(jump_sound)
-    //     } 
-  
-    // }
-    platform_maker :: proc(x, y, height, width: f32) -> rl.Rectangle{
+    rec_maker :: proc(x, y, height, width: f32) -> rl.Rectangle{
         make_rec := rl.Rectangle{
             x = x,
             y = y,
@@ -67,22 +66,50 @@ main :: proc() {
         return make_rec
     }
 
+    check_collision :: proc(rec1, rec2: rl.Rectangle, jump_sound: rl.Sound){
+        if rl.CheckCollisionRecs(rec1, rec2) {
+            // Check if character is mostly above the rec2
+            character_center_y := rec1.y + rec1.height/2
+            plat_center_y := rec2.y + rec2.height/2
+            
+            if character_center_y < plat_center_y {
+                // Land on top of rec2
+                character_pos.y = rec2.y - sprite_height_scale
+                character_off_ground = false
+                character_on_platform = true
+                jump_velocity = 0
+               if rl.IsKeyPressed(.SPACE) && character_on_platform {
+                jump_velocity = -400
+                character_off_ground = true
+                rl.PlaySound(jump_sound)
+            } 
+            } else {
+                // Side collision - push character away horizontally
+                character_center_x := rec1.x + rec1.width/2
+                platform_center_x := rec2.x + rec2.width/2
+                
+                if character_center_x < platform_center_x {
+                    // Push left
+                    character_pos.x = rec2.x - sprite_width_scale
+                } else {
+                    // Push right
+                    character_pos.x = rec2.x + rec2.width
+                }
+            }
+            //fall off platform if not standing on it
+            if character_pos.x < platform_pos.x || character_pos.x > platform_pos.x && character_on_platform == true{
+                character_off_ground = true
+            }
+        }
+    }
+
     rl.SetSoundVolume(background_sound, 0.25)
     rl.SetSoundVolume(flying_sound, 0.3)
+    rl.SetSoundVolume(jump_sound, 0.15)
     rl.PlaySound(background_sound)
 
     rl.SetTargetFPS(60)
-    character_pos := rl.Vector2{90, 600}
-    platform_pos:= rl.Vector2{300, 575} 
-    move_speed: f32 = 200 // Made this faster for testing
-    character_off_ground: bool 
-    ground_y: f32 = 600  // Ground level
-    jump_velocity: f32 
-    scale: f32 = 3.0 // Scale factor (3x larger)
-    sprite_height_scale:f32 = f32(sprite_height) * scale
-    sprite_width_scale:f32 = f32(sprite_width) * scale
-    character_hit_wall: bool
-    character_on_platform: bool
+    
     
     for !rl.WindowShouldClose() {
         dt := rl.GetFrameTime() // Delta time is crucial for frame-rate independent movement and animation
@@ -95,72 +122,42 @@ main :: proc() {
 
         // Draw a specific sprite (row 0, column 3 for example)
         bat_sprite := get_sprite_asset(21, 21, sprite_width, sprite_height)
-        dest_rect := rl.Rectangle{
-            x = character_pos.x,
-            y = character_pos.y,
-            width = sprite_width_scale,
-            height = sprite_height_scale
-        }
-       rl.DrawTexturePro(spritesheet, bat_sprite, dest_rect, {0, 0}, 0, rl.WHITE)
+        bat_rect := rec_maker(character_pos.x, character_pos.y, sprite_width_scale, sprite_height_scale) 
+        rl.DrawTexturePro(spritesheet, bat_sprite, bat_rect, {0, 0}, 0, rl.WHITE)
 
-       platform_sprite := get_sprite_asset(1, 1, sprite_width, sprite_height)
-       platform := rl.Rectangle{
-            x = platform_pos.x,
-            y = platform_pos.y, 
-            width = sprite_width_scale,
-            height = sprite_height_scale
-       }
-      new_rec := platform_maker(platform_pos.x, platform_pos.y, sprite_height_scale, sprite_width_scale)
-       // rl.DrawTexturePro(spritesheet, platform_sprite, platform, {0,0}, 0, rl.WHITE)
-       // rl.DrawTexturePro(spritesheet, platform_sprite, new_rec, {0,0}, 0, rl.WHITE)
+        platform_sprite := get_sprite_asset(1, 1, sprite_width, sprite_height)
+        platform := rec_maker(platform_pos.x, platform_pos.y, sprite_height_scale, sprite_width_scale)
+        rl.DrawTexturePro(spritesheet, platform_sprite, platform, {0,0}, 0, rl.WHITE)
 
-       // reset collision
-       character_hit_wall = false
 
-        // TODO: make sure you understand this!!!
-        //TODO: cant jump while on box
-        if rl.CheckCollisionRecs(dest_rect, platform) {
-            // Check if character is mostly above the platform
-            character_center_y := dest_rect.y + dest_rect.height/2
-            platform_center_y := platform.y + platform.height/2
+        // Draw and handle collision for multiple platforms
+        base_platform2 := rec_maker(platform_pos.x + 100, platform_pos.y - 100, sprite_height_scale, sprite_width_scale)
+
+        for i := 0; i < 10; i += 1 {
+            current_platform := base_platform2
+            current_platform.x += f32(i) * 50  // Place platforms side by side
             
-            if character_center_y < platform_center_y {
-                // Land on top of platform
-                character_pos.y = platform.y - sprite_height_scale
-                character_off_ground = false
-                character_on_platform = true
-                jump_velocity = 0
-               if rl.IsKeyPressed(.SPACE) && character_on_platform {
-                jump_velocity = -400
-                character_off_ground = true
-                rl.PlaySound(jump_sound)
-            } 
-            } else {
-                // Side collision - push character away horizontally
-                character_center_x := dest_rect.x + dest_rect.width/2
-                platform_center_x := platform.x + platform.width/2
-                
-                if character_center_x < platform_center_x {
-                    // Push left
-                    character_pos.x = platform.x - sprite_width_scale
-                } else {
-                    // Push right
-                    character_pos.x = platform.x + platform.width
-                }
-            }
-            //fall off platform if not standing on it
-            if character_pos.x < platform_pos.x || character_pos.x > platform_pos.x && character_on_platform == true{
-                character_off_ground = true
-            }
+            // Draw this platform
+            rl.DrawTexturePro(spritesheet, platform_sprite, current_platform, {0,0}, 0, rl.WHITE)
+            
+            // Check collision with this platform
+            check_collision(bat_rect, current_platform, jump_sound)
         }
+        
+
+        // Reset Collision
+        character_hit_wall = false
+
+        // COLLISION
+        check_collision(bat_rect, platform, jump_sound)
+
 
         // Jump & Jump-sound logic
-            if rl.IsKeyPressed(.SPACE) && !character_off_ground {
-                jump_velocity = -400
-                character_off_ground = true
-                rl.PlaySound(jump_sound)
-            } 
-
+        if rl.IsKeyPressed(.SPACE) && !character_off_ground {
+            jump_velocity = -400
+            character_off_ground = true
+            rl.PlaySound(jump_sound)
+        } 
 
        //Apply gravity and velocity 
         if character_off_ground {
