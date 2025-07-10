@@ -66,7 +66,7 @@ main :: proc() {
         return make_rec
     }
 
-    check_collision :: proc(rec1, rec2: rl.Rectangle, jump_sound: rl.Sound){
+    check_collision :: proc(rec1, rec2: rl.Rectangle, flying_sound, jump_sound: rl.Sound){
         if rl.CheckCollisionRecs(rec1, rec2) {
             // Check if character is mostly above the rec2
             character_center_y := rec1.y + rec1.height/2
@@ -83,6 +83,7 @@ main :: proc() {
                 character_off_ground = true
                 rl.PlaySound(jump_sound)
             } 
+
             } else {
                 // Side collision - push character away horizontally
                 character_center_x := rec1.x + rec1.width/2
@@ -101,11 +102,12 @@ main :: proc() {
                 character_off_ground = true
             }
         }
+
     }
 
     rl.SetSoundVolume(background_sound, 0.25)
     rl.SetSoundVolume(flying_sound, 0.3)
-    rl.SetSoundVolume(jump_sound, 0.15)
+    rl.SetSoundVolume(jump_sound, 0.3)
     rl.PlaySound(background_sound)
 
     rl.SetTargetFPS(60)
@@ -141,7 +143,7 @@ main :: proc() {
             rl.DrawTexturePro(spritesheet, platform_sprite, current_platform, {0,0}, 0, rl.WHITE)
             
             // Check collision with this platform
-            check_collision(bat_rect, current_platform, jump_sound)
+            check_collision(bat_rect, current_platform, flying_sound, jump_sound)
         }
         
 
@@ -149,7 +151,7 @@ main :: proc() {
         character_hit_wall = false
 
         // COLLISION
-        check_collision(bat_rect, platform, jump_sound)
+        check_collision(bat_rect, platform, flying_sound, jump_sound)
 
 
         // Jump & Jump-sound logic
@@ -174,12 +176,12 @@ main :: proc() {
         }
         
         // Movement and sound logic with corcharacter comparison operators
-        if rl.IsKeyPressed(.L) || rl.IsKeyPressed(.H) && character_off_ground == false {
+        if rl.IsKeyPressed(.L) || rl.IsKeyPressed(.H) {
             rl.PlaySound(flying_sound)
         }
 
         // Restart flying sound when landing while still holding movement keys
-        if !character_off_ground && (rl.IsKeyDown(.L) || rl.IsKeyDown(.H)) && !rl.IsSoundPlaying(flying_sound) {
+        if !character_off_ground  && (rl.IsKeyDown(.L) || rl.IsKeyDown(.H)) && !rl.IsSoundPlaying(flying_sound) {
             rl.PlaySound(flying_sound)
         }
         
@@ -199,8 +201,6 @@ main :: proc() {
             rl.StopSound(flying_sound)
         }
         
-        // Only one DrawRectangleV call needed
-        // rl.DrawRectangleV(character_pos, {50, 50}, rl.BLACK)
         rl.EndDrawing()
     }
 }
