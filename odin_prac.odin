@@ -6,6 +6,7 @@ sprite_width: i32 = 16   // Adjust based on your spritesheet
 sprite_height: i32 = 16
 character_pos := rl.Vector2{90, 600}
 platform_pos:= rl.Vector2{300, 575} 
+plat_pos:= rl.Vector2{350, 500}
 move_speed: f32 = 200 // Made this faster for testing
 character_off_ground: bool 
 ground_y: f32 = 600  // Ground level
@@ -15,6 +16,7 @@ sprite_height_scale:f32 = f32(sprite_height) * scale
 sprite_width_scale:f32 = f32(sprite_width) * scale
 character_hit_wall: bool
 character_on_platform: bool
+character_eat: bool
     
 main :: proc() {
     rl.InitWindow(1280, 720, "My Game")
@@ -132,6 +134,15 @@ main :: proc() {
         platform := rec_maker(platform_pos.x, platform_pos.y, sprite_height_scale, sprite_width_scale)
         rl.DrawTexturePro(spritesheet, platform_sprite, platform, {0,0}, 0, rl.WHITE)
 
+        plat_sprite := get_sprite_asset(30, 30, sprite_width, sprite_height)
+        plat := rec_maker(plat_pos.x, plat_pos.y, sprite_height_scale, sprite_width_scale)
+        if !character_eat{
+            rl.DrawTexturePro(spritesheet, plat_sprite, plat, {0,0}, 0, rl.WHITE)
+        }
+        
+        if rl.CheckCollisionRecs(bat_rect, plat) {
+            character_eat = true
+        }
 
         // Draw and handle collision for multiple platforms
         base_platform2 := rec_maker(platform_pos.x + 100, platform_pos.y - 100, sprite_height_scale, sprite_width_scale)
@@ -146,6 +157,11 @@ main :: proc() {
             // Check collision with this platform
             check_collision(bat_rect, current_platform, jump_sound)
         }
+
+        // Delete plat rec if bat_rect touches
+        // if rl.CheckCollisionRecs(bat_rect, plat) {
+
+        // }
         
 
 
