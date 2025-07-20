@@ -6,7 +6,7 @@ sprite_width: i32 = 16   // Adjust based on your spritesheet
 sprite_height: i32 = 16
 character_pos := rl.Vector2{90, 600}
 platform_pos:= rl.Vector2{300, 575} 
-plat_pos:= rl.Vector2{350, 500}
+plat_pos:= rl.Vector2{1050, 400}
 move_speed: f32 = 200 // Made this faster for testing
 character_off_ground: bool 
 ground_y: f32 = 600  // Ground level
@@ -46,7 +46,14 @@ main :: proc() {
     ground_texture := rl.LoadTexture("assets/parallax-mountain-trees.png")
     defer rl.UnloadTexture(ground_texture)
 
-    // Define the size of each sprite (you need to measure/count pixels)
+
+    end_screen :: proc(end_screen_true: bool) {
+        if end_screen_true{
+            rl.BeginDrawing()
+            rl.DrawText("you win!", 1000, 300, 48, rl.WHITE)
+            rl.EndDrawing()
+        }
+    }
 
     // To get a specific sprite, calculate its position in the grid
     get_sprite_asset :: proc(row, col: i32, sprite_w, sprite_h: i32) -> rl.Rectangle {
@@ -125,23 +132,28 @@ main :: proc() {
         rl.DrawTextureEx(background_texture, {0, 0}, 0, 1280.0/f32(background_texture.width), rl.WHITE) 
         rl.DrawTextureEx(ground_texture, {0, 380}, 0, 1280.0/f32(ground_texture.width), rl.WHITE)
 
-        // Draw a specific sprite (row 0, column 3 for example)
+        // Create a specific sprite for a RECTANGLE (row 0, column 3 for example)
         bat_sprite := get_sprite_asset(21, 21, sprite_width, sprite_height)
-        bat_rect := rec_maker(character_pos.x, character_pos.y, sprite_width_scale, sprite_height_scale) 
-        rl.DrawTexturePro(spritesheet, bat_sprite, bat_rect, {0, 0}, 0, rl.WHITE)
-
         platform_sprite := get_sprite_asset(1, 1, sprite_width, sprite_height)
+        plat_sprite := get_sprite_asset(30, 30, sprite_width, sprite_height)
+
+        // Make Rectangle 
+        bat_rect := rec_maker(character_pos.x, character_pos.y, sprite_width_scale, sprite_height_scale) 
         platform := rec_maker(platform_pos.x, platform_pos.y, sprite_height_scale, sprite_width_scale)
+        plat := rec_maker(plat_pos.x, plat_pos.y, sprite_height_scale, sprite_width_scale)
+
+        // Add Texture to Rectangles
+        rl.DrawTexturePro(spritesheet, bat_sprite, bat_rect, {0, 0}, 0, rl.WHITE)
         rl.DrawTexturePro(spritesheet, platform_sprite, platform, {0,0}, 0, rl.WHITE)
 
-        plat_sprite := get_sprite_asset(30, 30, sprite_width, sprite_height)
-        plat := rec_maker(plat_pos.x, plat_pos.y, sprite_height_scale, sprite_width_scale)
+
+        // Edible-textures
         if !character_eat{
             rl.DrawTexturePro(spritesheet, plat_sprite, plat, {0,0}, 0, rl.WHITE)
         }
-        
         if rl.CheckCollisionRecs(bat_rect, plat) {
             character_eat = true
+            end_screen(true)
         }
 
         // Draw and handle collision for multiple platforms
@@ -220,6 +232,6 @@ main :: proc() {
             rl.StopSound(flying_sound)
         }
         
-        rl.EndDrawing()
+        rl.EndDrawing() 
     }
 }
