@@ -2,6 +2,12 @@ package main
 import "core:fmt"
 import rl "vendor:raylib"
 
+// Game states
+GameState :: enum {
+    PLAYING,
+    WON,
+}
+
 sprite_width: i32 = 16   // Adjust based on your spritesheet
 sprite_height: i32 = 16
 character_pos := rl.Vector2{90, 600}
@@ -17,6 +23,7 @@ sprite_width_scale:f32 = f32(sprite_width) * scale
 character_hit_wall: bool
 character_on_platform: bool
 character_eat: bool
+game_state: GameState = .PLAYING
     
 main :: proc() {
     rl.InitWindow(1280, 720, "My Game")
@@ -45,15 +52,6 @@ main :: proc() {
 
     ground_texture := rl.LoadTexture("assets/parallax-mountain-trees.png")
     defer rl.UnloadTexture(ground_texture)
-
-
-    end_screen :: proc(end_screen_true: bool) {
-        if end_screen_true{
-            rl.BeginDrawing()
-            rl.DrawText("you win!", 1000, 300, 48, rl.WHITE)
-            rl.EndDrawing()
-        }
-    }
 
     // To get a specific sprite, calculate its position in the grid
     get_sprite_asset :: proc(row, col: i32, sprite_w, sprite_h: i32) -> rl.Rectangle {
@@ -112,7 +110,6 @@ main :: proc() {
                 character_off_ground = true
             }
         }
-
     }
 
     rl.SetSoundVolume(background_sound, 0.25)
@@ -125,9 +122,32 @@ main :: proc() {
    //GAME LOOP 
     for !rl.WindowShouldClose() {
         dt := rl.GetFrameTime() // Delta time is crucial for frame-rate independent movement and animation
+        
         rl.BeginDrawing()
         rl.ClearBackground(rl.GRAY)
 
+        // Check game state
+        if game_state == .WON {
+            // Draw end screen
+            rl.DrawText("YOU WIN!", 400, 300, 72, rl.YELLOW)
+            rl.DrawText("Press ENTER to restart or ESC to quit", 350, 400, 24, rl.WHITE)
+            
+            // Handle restart
+            if rl.IsKeyPressed(.ENTER) {
+                // Reset game state
+                game_state = .PLAYING
+                character_eat = false
+                character_pos = rl.Vector2{90, 600}
+                character_off_ground = false
+                character_on_platform = false
+                jump_velocity = 0
+            }
+            
+            rl.EndDrawing()
+            continue // Skip the rest of the game logic
+        }
+
+        // Normal gameplay continues here (only when game_state == .PLAYING)
         // Background Textures
         rl.DrawTextureEx(background_texture, {0, 0}, 0, 1280.0/f32(background_texture.width), rl.WHITE) 
         rl.DrawTextureEx(ground_texture, {0, 380}, 0, 1280.0/f32(ground_texture.width), rl.WHITE)
@@ -146,14 +166,13 @@ main :: proc() {
         rl.DrawTexturePro(spritesheet, bat_sprite, bat_rect, {0, 0}, 0, rl.WHITE)
         rl.DrawTexturePro(spritesheet, platform_sprite, platform, {0,0}, 0, rl.WHITE)
 
-
         // Edible-textures
         if !character_eat{
             rl.DrawTexturePro(spritesheet, plat_sprite, plat, {0,0}, 0, rl.WHITE)
         }
         if rl.CheckCollisionRecs(bat_rect, plat) {
             character_eat = true
-            end_screen(true)
+            game_state = .WON // Change game state instead of calling end_screen
         }
 
         // Draw and handle collision for multiple platforms
@@ -170,16 +189,8 @@ main :: proc() {
             check_collision(bat_rect, current_platform, jump_sound)
         }
 
-        // Delete plat rec if bat_rect touches
-        // if rl.CheckCollisionRecs(bat_rect, plat) {
-
-        // }
-        
-
-
         // COLLISION
         check_collision(bat_rect, platform, jump_sound)
-
 
         // Jump & Jump-sound logic
         if rl.IsKeyPressed(.SPACE) && !character_off_ground {
@@ -192,7 +203,6 @@ main :: proc() {
         if character_off_ground {
             jump_velocity += 900 * dt
             character_pos.y += jump_velocity * dt
-
         }
 
         // check for landing
