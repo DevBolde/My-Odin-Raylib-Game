@@ -8,7 +8,7 @@
 			"path": "C:\\Odin\\core",
 		},
 		{
-			"path": "C:\\Odin\\vendor\\raylib"
+			"path": "C:\\Odin\\vendor\\raylib",
 		},
 	],
 	"build_systems":
@@ -25,7 +25,7 @@
 				},
 				{
 					"name": "Windows", 
-					"cmd": ["C:\\odin\\odin.exe", "run", "$file_name", "-file"],
+					"cmd": ["C:\\users\\defu\\odin\\odin.exe", "run", "$file_name", "-file"],
 				}
 			],
 		},
@@ -41,7 +41,7 @@
 				},
 				{
 					"name": "Windows",
-					"cmd": ["C:\\odin\\odin.exe", "run", "."],
+					"cmd": ["C:\\users\\defu\\odin\\odin.exe", "run", "."],
 				}
 			],
 		}
