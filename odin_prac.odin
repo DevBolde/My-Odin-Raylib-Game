@@ -5,7 +5,7 @@ import rl "vendor:raylib"
 // Game states
 GameState :: enum {
     PLAYING,
-    LEVELCOMPLETE,
+    SECOND_LEVEL,
     WON,
 }
 
@@ -14,6 +14,7 @@ sprite_height: i32 = 16
 character_pos := rl.Vector2{90, 600}
 platform_pos:= rl.Vector2{300, 575} 
 plat_pos:= rl.Vector2{1050, 400}
+plat_pos2:= rl.Vector2{1200, 200}
 move_speed: f32 = 200 // Made this faster for testing
 character_off_ground: bool 
 ground_y: f32 = 600  // Ground level
@@ -124,6 +125,7 @@ main :: proc() {
    //
     for !rl.WindowShouldClose() {
         dt := rl.GetFrameTime() // Delta time is crucial for frame-rate independent movement and animation
+        character_eat = false
         
         rl.BeginDrawing()
         rl.ClearBackground(rl.GRAY)
@@ -149,14 +151,21 @@ main :: proc() {
             continue // Skip the rest of the game logic
         }
 
+<<<<<<< HEAD
         //LEVELCOMPLETE CODE
         //TODO: make the level-complete level diffrent from the first. possibly make different level state/make a level counter state;
         //
         if game_state == .LEVELCOMPLETE{
+=======
+        //SECOND LEVEL
+        //
+        if game_state == .SECOND_LEVEL{
+>>>>>>> 7e553a2 (Finished second level)
 
         rl.DrawTextureEx(background_texture, {0, 0}, 0, 1280.0/f32(background_texture.width), rl.WHITE) 
         rl.DrawTextureEx(ground_texture, {0, 380}, 0, 1280.0/f32(ground_texture.width), rl.WHITE)
 
+<<<<<<< HEAD
         // Create a specific sprite for a RECTANGLE (row 0, column 3 for example)
         //
         bat_sprite := get_sprite_asset(21, 21, sprite_width, sprite_height)
@@ -178,6 +187,109 @@ main :: proc() {
         //
         if !character_eat{
             rl.DrawTexturePro(spritesheet, plat_sprite, plat, {0,0}, 0, rl.WHITE)
+=======
+            // Make Rectangle 
+            bat_rect := rec_maker(character_pos.x, character_pos.y, sprite_width_scale, sprite_height_scale) 
+            platform := rec_maker(platform_pos.x, platform_pos.y, sprite_height_scale, sprite_width_scale)
+            plat := rec_maker(plat_pos.x, plat_pos.y, sprite_height_scale, sprite_width_scale)
+            plat2 := rec_maker(plat_pos2.x, plat_pos2.y, sprite_height_scale, sprite_width_scale)
+
+            rl.DrawTexturePro(spritesheet, bat_sprite, bat_rect, {0, 0}, 0, rl.WHITE)
+            rl.DrawTexturePro(spritesheet, platform_sprite, platform, {0,0}, 0, rl.WHITE)
+
+             // Edible-textures
+        if !character_eat{
+            rl.DrawTexturePro(spritesheet, plat_sprite, plat2, {0,0}, 0, rl.WHITE)
+        }
+        if rl.CheckCollisionRecs(bat_rect, plat2) {
+            character_eat = true
+            game_state = .WON // Change game state instead of calling end_screen
+        }
+
+        // Draw and handle collision for multiple platforms
+        base_platform2 := rec_maker(platform_pos.x + 100, platform_pos.y - 100, sprite_height_scale, sprite_width_scale)
+
+        for i := 6; i < 14; i += 1{
+
+        rising_steps := base_platform2
+
+        rising_steps.x += f32(i) * 50
+        rising_steps.y += f32(i) * -20
+
+        rl.DrawTexturePro(spritesheet, platform_sprite, rising_steps, {0,0}, 0, rl.WHITE)
+
+        check_collision(bat_rect, rising_steps, jump_sound)
+        }
+
+
+
+        for i := 0; i < 15; i += 1 {
+            current_platform := base_platform2
+            current_platform.x += f32(i) * 50  // Place platforms side by side
+            
+            // Draw this platform
+            rl.DrawTexturePro(spritesheet, platform_sprite, current_platform, {0,0}, 0, rl.WHITE)
+            
+            // Check collision with this platform
+            check_collision(bat_rect, current_platform, jump_sound)
+        }
+
+        // COLLISION
+        check_collision(bat_rect, platform, jump_sound)
+
+        // Jump & Jump-sound logic
+        if rl.IsKeyPressed(.SPACE) && !character_off_ground {
+            jump_velocity = -400
+            character_off_ground = true
+            rl.PlaySound(jump_sound)
+        } 
+
+       //Apply gravity and velocity 
+        if character_off_ground {
+            jump_velocity += 900 * dt
+            character_pos.y += jump_velocity * dt
+        }
+
+        // check for landing
+        if character_pos.y >= ground_y{
+            character_pos.y = ground_y
+            character_off_ground = false
+            jump_velocity = 0
+        }
+        
+        // Movement and sound logic with character comparison operators
+        if (rl.IsKeyPressed(.L) || rl.IsKeyPressed(.H)) && !character_off_ground || character_on_platform{
+            rl.PlaySound(flying_sound)
+        }
+
+        // Restart flying sound when landing while still holding movement keys
+        if !character_off_ground  && (rl.IsKeyDown(.L) || rl.IsKeyDown(.H)) && !rl.IsSoundPlaying(flying_sound) {
+            rl.PlaySound(flying_sound)
+        }
+        
+        // Restart flying sound when landing while still holding movement keys
+        if character_on_platform  && (rl.IsKeyDown(.L) || rl.IsKeyDown(.H)) && !rl.IsSoundPlaying(flying_sound) {
+            rl.PlaySound(flying_sound)
+        }
+        if rl.IsKeyDown(.L) && !character_hit_wall{
+            character_pos.x += move_speed * dt
+            if character_pos.x > 1280 - 50 {
+                character_pos.x = 1280 - 50
+            }
+        }
+        if rl.IsKeyDown(.H) && !character_hit_wall{
+            character_pos.x -= move_speed * dt  // Changed += to -=
+            if character_pos.x < 0 {            // Changed boundary check
+                character_pos.x = 0
+            }
+        }        
+        if (rl.IsKeyReleased(.L) || rl.IsKeyReleased(.H)) || character_off_ground == true {
+            rl.StopSound(flying_sound)
+        }
+            
+            rl.EndDrawing()
+            continue
+>>>>>>> 7e553a2 (Finished second level)
         }
         if rl.CheckCollisionRecs(bat_rect, plat) {
             character_eat = true
@@ -290,6 +402,7 @@ main :: proc() {
         }
         if rl.CheckCollisionRecs(bat_rect, plat) {
             character_eat = true
+<<<<<<< HEAD
                 game_state = .PLAYING
                 character_eat = false
                 character_pos = rl.Vector2{90, 600}
@@ -297,6 +410,9 @@ main :: proc() {
                 character_on_platform = false
                 jump_velocity = 0
             game_state = .LEVELCOMPLETE // Change game state instead of calling end_screen
+=======
+            game_state = .SECOND_LEVEL // Change game state instead of calling end_screen
+>>>>>>> 7e553a2 (Finished second level)
         }
 
         // Draw and handle collision for multiple platforms
