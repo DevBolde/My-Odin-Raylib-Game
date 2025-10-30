@@ -5,17 +5,14 @@
 			"path": ".",
 		},
 		{
-<<<<<<< HEAD
 			"path": "C:\\Users\\defu\\Odin\\core",
 		},
 		{
 			"path": "C:\\Users\\defu\\Odin\\vendor\\raylib",
-=======
 			"path": "/Users/defu/odin/core",
 		},
 		{
 			"path": "/Users/defu/odin/vendor/raylib"
->>>>>>> 7e553a2 (Finished second level)
 		},
 	],
 	"build_systems":

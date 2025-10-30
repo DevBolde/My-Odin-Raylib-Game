@@ -6,6 +6,7 @@ import rl "vendor:raylib"
 GameState :: enum {
     PLAYING,
     SECOND_LEVEL,
+    MENU,
     WON,
 }
 
@@ -25,7 +26,7 @@ sprite_width_scale:f32 = f32(sprite_width) * scale
 character_hit_wall: bool
 character_on_platform: bool
 character_eat: bool
-game_state: GameState = .PLAYING
+game_state: GameState = .MENU
     
 main :: proc() {
     rl.InitWindow(1280, 720, "My Game")
@@ -40,9 +41,6 @@ main :: proc() {
     background_sound := rl.LoadSound("assets/bgPlasma_sound.wav")
     defer rl.UnloadSound(background_sound)
     
-    walking_sound := rl.LoadSound("assets/07064246.wav") 
-    defer rl.UnloadSound(walking_sound)
-
     flying_sound := rl.LoadSound("assets/bat_wings.wav")
     defer rl.UnloadSound(flying_sound)
     
@@ -64,6 +62,20 @@ main :: proc() {
             height = f32(sprite_h)
         }
     }
+
+    // stair_up :: proc(first_block_start, how_many_blocks: int, rec_maker: rl.Rectangle, steps_x, steps_y: int, platfortm_sprite: rl.Rectangle){
+    //     for i := first_block_start; i < how_many_blocks; i += 1{
+
+    //     rising_steps := rec_maker
+
+    //     rising_steps.x += f32(i) * steps_x
+    //     rising_steps.y += f32(i) * steps_y
+
+    //     rl.DrawTexturePro(spritesheet, platform_sprite, rising_steps, {0,0}, 0, rl.WHITE)
+
+    //     check_collision(bat_rect, rising_steps, jump_sound)
+    //     }
+    // }
 
     rec_maker :: proc(x, y, height, width: f32) -> rl.Rectangle{
         make_rec := rl.Rectangle{
@@ -128,8 +140,30 @@ main :: proc() {
         
         rl.BeginDrawing()
         rl.ClearBackground(rl.GRAY)
+        //MENU STATE
+        //
+        if game_state == .MENU {
 
-        // Check game state
+            rl.DrawText("BAT JUMP", 400, 300, 72, rl.YELLOW)
+            rl.DrawText("Press ENTER to start or ESC to quit", 350, 400, 24, rl.WHITE)
+
+            // Handle restart
+            if rl.IsKeyPressed(.ENTER) {
+                // Reset game state
+                game_state = .PLAYING
+                character_eat = false
+                character_pos = rl.Vector2{90, 600}
+                character_off_ground = false
+                character_on_platform = false
+                jump_velocity = 0
+            }
+            
+            rl.EndDrawing()
+            continue // Skip the rest of the game logic
+        }
+
+        //WINNING STATE 
+        //
         if game_state == .WON {
             // Draw end screen
             rl.DrawText("YOU WIN!", 400, 300, 72, rl.YELLOW)
@@ -181,6 +215,8 @@ main :: proc() {
         // Draw and handle collision for multiple platforms
         base_platform2 := rec_maker(platform_pos.x + 100, platform_pos.y - 100, sprite_height_scale, sprite_width_scale)
 
+        //CREATING STAIRS
+        //
         for i := 6; i < 14; i += 1{
 
         rising_steps := base_platform2
@@ -193,8 +229,6 @@ main :: proc() {
         check_collision(bat_rect, rising_steps, jump_sound)
         }
 
-
-
         for i := 0; i < 15; i += 1 {
             current_platform := base_platform2
             current_platform.x += f32(i) * 50  // Place platforms side by side
@@ -205,6 +239,7 @@ main :: proc() {
             // Check collision with this platform
             check_collision(bat_rect, current_platform, jump_sound)
         }
+
 
         // COLLISION
         check_collision(bat_rect, platform, jump_sound)
