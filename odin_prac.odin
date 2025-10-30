@@ -298,7 +298,8 @@ main :: proc() {
             continue
         }
 
-        // Normal gameplay continues here (only when game_state == .PLAYING)
+        // PLAYING STATE(first play through) 
+        // 
         // Background Textures
         rl.DrawTextureEx(background_texture, {0, 0}, 0, 1280.0/f32(background_texture.width), rl.WHITE) 
         rl.DrawTextureEx(ground_texture, {0, 380}, 0, 1280.0/f32(ground_texture.width), rl.WHITE)
