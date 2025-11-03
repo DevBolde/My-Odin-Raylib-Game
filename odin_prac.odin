@@ -13,6 +13,7 @@ GameState :: enum {
 sprite_width: i32 = 16   // Adjust based on your spritesheet
 sprite_height: i32 = 16
 character_pos := rl.Vector2{90, 600}
+enemie_pos := rl.Vector2{400, 400}
 platform_pos:= rl.Vector2{300, 575} 
 plat_pos:= rl.Vector2{1050, 400}
 plat_pos2:= rl.Vector2{1200, 200}
@@ -140,12 +141,13 @@ main :: proc() {
         
         rl.BeginDrawing()
         rl.ClearBackground(rl.GRAY)
+
         //MENU STATE
         //
         if game_state == .MENU {
 
-            rl.DrawText("BAT JUMP", 400, 300, 72, rl.YELLOW)
-            rl.DrawText("Press ENTER to start or ESC to quit", 350, 400, 24, rl.WHITE)
+            rl.DrawText("DAT BAT", 400, 300, 72, rl.YELLOW)
+            rl.DrawText("Press ENTER to start DAT BAT or ESC to quit", 350, 400, 24, rl.WHITE)
 
             // Handle restart
             if rl.IsKeyPressed(.ENTER) {
@@ -193,15 +195,18 @@ main :: proc() {
             bat_sprite := get_sprite_asset(21, 21, sprite_width, sprite_height)
             platform_sprite := get_sprite_asset(1, 1, sprite_width, sprite_height)
             plat_sprite := get_sprite_asset(30, 30, sprite_width, sprite_height)
+            enemie_sprite := get_sprite_asset(20,22, sprite_width, sprite_height)
 
             // Make Rectangle 
             bat_rect := rec_maker(character_pos.x, character_pos.y, sprite_width_scale, sprite_height_scale) 
+            enemie_rect := rec_maker(enemie_pos.x, enemie_pos.y, sprite_width_scale, sprite_height_scale) 
             platform := rec_maker(platform_pos.x, platform_pos.y, sprite_height_scale, sprite_width_scale)
             plat := rec_maker(plat_pos.x, plat_pos.y, sprite_height_scale, sprite_width_scale)
             plat2 := rec_maker(plat_pos2.x, plat_pos2.y, sprite_height_scale, sprite_width_scale)
 
             rl.DrawTexturePro(spritesheet, bat_sprite, bat_rect, {0, 0}, 0, rl.WHITE)
             rl.DrawTexturePro(spritesheet, platform_sprite, platform, {0,0}, 0, rl.WHITE)
+            rl.DrawTexturePro(spritesheet, enemie_sprite, enemie_rect, {0, 0}, 0, rl.WHITE)
 
              // Edible-textures
         if !character_eat{
@@ -241,9 +246,8 @@ main :: proc() {
         }
 
 
-        // COLLISION
+        // BAT-COLLISION
         check_collision(bat_rect, platform, jump_sound)
-
         // Jump & Jump-sound logic
         if rl.IsKeyPressed(.SPACE) && !character_off_ground {
             jump_velocity = -400
@@ -260,6 +264,28 @@ main :: proc() {
         // check for landing
         if character_pos.y >= ground_y{
             character_pos.y = ground_y
+            character_off_ground = false
+            jump_velocity = 0
+        }
+
+        // ENEMY-COLLISION
+        check_collision(enemie_rect, platform, jump_sound)
+        // Jump & Jump-sound logic
+        if rl.IsKeyPressed(.SPACE) && !character_off_ground {
+            jump_velocity = -400
+            character_off_ground = true
+            rl.PlaySound(jump_sound)
+        } 
+
+       //Apply gravity and velocity 
+        if character_off_ground {
+            jump_velocity += 900 * dt
+            enemie_pos.y += jump_velocity * dt
+        }
+
+        // check for landing
+        if enemie_pos.y >= ground_y{
+            enemie_pos.y = ground_y
             character_off_ground = false
             jump_velocity = 0
         }
