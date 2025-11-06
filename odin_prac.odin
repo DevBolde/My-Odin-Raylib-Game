@@ -13,19 +13,22 @@ GameState :: enum {
 sprite_width: i32 = 16   // Adjust based on your spritesheet
 sprite_height: i32 = 16
 character_pos := rl.Vector2{90, 600}
-enemie_pos := rl.Vector2{400, 400}
+enemy_pos := rl.Vector2{400, 400}
 platform_pos:= rl.Vector2{300, 575} 
 plat_pos:= rl.Vector2{1050, 400}
 plat_pos2:= rl.Vector2{1200, 200}
 move_speed: f32 = 200 // Made this faster for testing
 character_off_ground: bool 
+enemy_off_ground: bool
 ground_y: f32 = 600  // Ground level
 jump_velocity: f32 
 scale: f32 = 3.0 // Scale factor (3x larger)
 sprite_height_scale:f32 = f32(sprite_height) * scale
 sprite_width_scale:f32 = f32(sprite_width) * scale
 character_hit_wall: bool
+enemy_hit_wall: bool
 character_on_platform: bool
+enemy_on_platform: bool
 character_eat: bool
 game_state: GameState = .MENU
     
@@ -63,20 +66,6 @@ main :: proc() {
             height = f32(sprite_h)
         }
     }
-
-    // stair_up :: proc(first_block_start, how_many_blocks: int, rec_maker: rl.Rectangle, steps_x, steps_y: int, platfortm_sprite: rl.Rectangle){
-    //     for i := first_block_start; i < how_many_blocks; i += 1{
-
-    //     rising_steps := rec_maker
-
-    //     rising_steps.x += f32(i) * steps_x
-    //     rising_steps.y += f32(i) * steps_y
-
-    //     rl.DrawTexturePro(spritesheet, platform_sprite, rising_steps, {0,0}, 0, rl.WHITE)
-
-    //     check_collision(bat_rect, rising_steps, jump_sound)
-    //     }
-    // }
 
     rec_maker :: proc(x, y, height, width: f32) -> rl.Rectangle{
         make_rec := rl.Rectangle{
@@ -127,6 +116,45 @@ main :: proc() {
         }
     }
 
+    enemy_check_collision :: proc(rec1, rec2: rl.Rectangle, jump_sound: rl.Sound){
+        if rl.CheckCollisionRecs(rec1, rec2) {
+            // Check if enemy is mostly above the rec2
+            enemy_center_y := rec1.y + rec1.height/2
+            plat_center_y := rec2.y + rec2.height/2
+            
+            if enemy_center_y < plat_center_y {
+                // Land on top of rec2
+                enemy_pos.y = rec2.y - sprite_height_scale
+                enemy_off_ground = false
+                enemy_on_platform = true
+                jump_velocity = 0
+              
+            //    if rl.IsKeyPressed(.SPACE) && enemy_on_platform {
+            //     jump_velocity = -400
+            //     enemy_off_ground = true
+            //     rl.PlaySound(jump_sound)
+            // } 
+
+            } else {
+                // Side collision - push enemy away horizontally
+                enemy_center_x := rec1.x + rec1.width/2
+                platform_center_x := rec2.x + rec2.width/2
+                
+                if enemy_center_x < platform_center_x {
+                    // Push left
+                    enemy_pos.x = rec2.x - sprite_width_scale
+                } else {
+                    // Push right
+                    enemy_pos.x = rec2.x + rec2.width
+                }
+            }
+            //fall off platform if not standing on it
+            if enemy_pos.x < platform_pos.x || enemy_pos.x > platform_pos.x && enemy_on_platform == true{
+                enemy_off_ground = true
+            }
+        }
+    }
+
     rl.SetSoundVolume(background_sound, 0.25)
     rl.SetSoundVolume(flying_sound, 0.3)
     rl.SetSoundVolume(jump_sound, 0.3)
@@ -156,6 +184,7 @@ main :: proc() {
                 character_eat = false
                 character_pos = rl.Vector2{90, 600}
                 character_off_ground = false
+                enemy_off_ground = false
                 character_on_platform = false
                 jump_velocity = 0
             }
@@ -178,6 +207,7 @@ main :: proc() {
                 character_eat = false
                 character_pos = rl.Vector2{90, 600}
                 character_off_ground = false
+                enemy_off_ground = false
                 character_on_platform = false
                 jump_velocity = 0
             }
@@ -189,30 +219,31 @@ main :: proc() {
         //SECOND LEVEL
         //
         if game_state == .SECOND_LEVEL{
+            enemy_off_ground = true
 
             rl.DrawTextureEx(background_texture, {0, 0}, 0, 1280.0/f32(background_texture.width), rl.WHITE) 
             rl.DrawTextureEx(ground_texture, {0, 380}, 0, 1280.0/f32(ground_texture.width), rl.WHITE)
             bat_sprite := get_sprite_asset(21, 21, sprite_width, sprite_height)
             platform_sprite := get_sprite_asset(1, 1, sprite_width, sprite_height)
             plat_sprite := get_sprite_asset(30, 30, sprite_width, sprite_height)
-            enemie_sprite := get_sprite_asset(20,22, sprite_width, sprite_height)
+            enemy_sprite := get_sprite_asset(20,22, sprite_width, sprite_height)
 
             // Make Rectangle 
             bat_rect := rec_maker(character_pos.x, character_pos.y, sprite_width_scale, sprite_height_scale) 
-            enemie_rect := rec_maker(enemie_pos.x, enemie_pos.y, sprite_width_scale, sprite_height_scale) 
+            enemy_rect := rec_maker(enemy_pos.x, enemy_pos.y, sprite_width_scale, sprite_height_scale) 
             platform := rec_maker(platform_pos.x, platform_pos.y, sprite_height_scale, sprite_width_scale)
             plat := rec_maker(plat_pos.x, plat_pos.y, sprite_height_scale, sprite_width_scale)
-            plat2 := rec_maker(plat_pos2.x, plat_pos2.y, sprite_height_scale, sprite_width_scale)
+            food_plat2 := rec_maker(plat_pos2.x, plat_pos2.y, sprite_height_scale, sprite_width_scale)
 
             rl.DrawTexturePro(spritesheet, bat_sprite, bat_rect, {0, 0}, 0, rl.WHITE)
             rl.DrawTexturePro(spritesheet, platform_sprite, platform, {0,0}, 0, rl.WHITE)
-            rl.DrawTexturePro(spritesheet, enemie_sprite, enemie_rect, {0, 0}, 0, rl.WHITE)
+            rl.DrawTexturePro(spritesheet, enemy_sprite, enemy_rect, {0, 0}, 0, rl.WHITE)
 
              // Edible-textures
         if !character_eat{
-            rl.DrawTexturePro(spritesheet, plat_sprite, plat2, {0,0}, 0, rl.WHITE)
+            rl.DrawTexturePro(spritesheet, plat_sprite, food_plat2, {0,0}, 0, rl.WHITE)
         }
-        if rl.CheckCollisionRecs(bat_rect, plat2) {
+        if rl.CheckCollisionRecs(bat_rect, food_plat2) {
             character_eat = true
             game_state = .WON // Change game state instead of calling end_screen
         }
@@ -269,24 +300,18 @@ main :: proc() {
         }
 
         // ENEMY-COLLISION
-        check_collision(enemie_rect, platform, jump_sound)
-        // Jump & Jump-sound logic
-        if rl.IsKeyPressed(.SPACE) && !character_off_ground {
-            jump_velocity = -400
-            character_off_ground = true
-            rl.PlaySound(jump_sound)
-        } 
+        enemy_check_collision(enemy_rect, platform, jump_sound)
 
-       //Apply gravity and velocity 
-        if character_off_ground {
+        // Apply gravity to enemy (not character!)
+        if enemy_off_ground {
             jump_velocity += 900 * dt
-            enemie_pos.y += jump_velocity * dt
+            enemy_pos.y += jump_velocity * dt
         }
 
-        // check for landing
-        if enemie_pos.y >= ground_y{
-            enemie_pos.y = ground_y
-            character_off_ground = false
+        // Check for enemy landing on ground
+        if enemy_pos.y >= ground_y {
+            enemy_pos.y = ground_y
+            enemy_off_ground = false
             jump_velocity = 0
         }
         
@@ -316,6 +341,14 @@ main :: proc() {
                 character_pos.x = 0
             }
         }        
+        if  !enemy_hit_wall{
+            if enemy_pos.x > 1280 - 50 {
+                enemy_pos.x = 1280 - 50
+            }
+            if enemy_pos.x < 0 {            // Changed boundary check
+                enemy_pos.x = 0
+            }
+        }
         if (rl.IsKeyReleased(.L) || rl.IsKeyReleased(.H)) || character_off_ground == true {
             rl.StopSound(flying_sound)
         }
