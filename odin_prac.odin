@@ -155,9 +155,9 @@ main :: proc() {
         }
     }
 
-    rl.SetSoundVolume(background_sound, 0.25)
-    rl.SetSoundVolume(flying_sound, 0.3)
-    rl.SetSoundVolume(jump_sound, 0.3)
+    rl.SetSoundVolume(background_sound, 0) // turn back to 0.25 when you want sound back to normal DONT FORGET!!!!
+    rl.SetSoundVolume(flying_sound, 0) // 
+    rl.SetSoundVolume(jump_sound, 0)
     rl.PlaySound(background_sound)
 
     rl.SetTargetFPS(60)
@@ -263,6 +263,7 @@ main :: proc() {
         rl.DrawTexturePro(spritesheet, platform_sprite, rising_steps, {0,0}, 0, rl.WHITE)
 
         check_collision(bat_rect, rising_steps, jump_sound)
+        enemy_check_collision(enemy_rect, rising_steps, jump_sound)
         }
 
         for i := 0; i < 15; i += 1 {
@@ -274,6 +275,7 @@ main :: proc() {
             
             // Check collision with this platform
             check_collision(bat_rect, current_platform, jump_sound)
+            enemy_check_collision(enemy_rect, current_platform, jump_sound)
         }
 
 
@@ -301,10 +303,8 @@ main :: proc() {
 
         // ENEMY-COLLISION
         enemy_check_collision(enemy_rect, platform, jump_sound)
-
         // Apply gravity to enemy (not character!)
         if enemy_off_ground {
-            jump_velocity += 900 * dt
             enemy_pos.y += jump_velocity * dt
         }
 
@@ -313,6 +313,11 @@ main :: proc() {
             enemy_pos.y = ground_y
             enemy_off_ground = false
             jump_velocity = 0
+        }
+
+        //ENEMY-MOVEMENT
+        if enemy_pos.x < platform_pos.x{
+            enemy_pos.x += 5
         }
         
         // Movement and sound logic with character comparison operators
@@ -407,6 +412,7 @@ main :: proc() {
         if rl.IsKeyPressed(.SPACE) && !character_off_ground {
             jump_velocity = -400
             character_off_ground = true
+            enemy_off_ground = false
             rl.PlaySound(jump_sound)
         } 
 
